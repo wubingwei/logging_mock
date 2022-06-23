@@ -11,7 +11,7 @@ all: build test # golint
 
 .PHONY: build
 build: mod
-	go build -ldflags "-X main.GitTag=$(GIT_TAG) -X main.BuildTime=$(BUILD_DATE) -X main.GitCommit=$(COMMIT_HASH) -X main.GitAuthor=$(GIT_AUTHOR)"  -o ${BIN_NAME} ./main/main.go
+	go build -ldflags "-X main.BuildTime=$(BUILD_DATE) -X main.GitCommit=$(COMMIT_HASH) -X main.GitAuthor=$(GIT_AUTHOR)"  -o ${BIN_NAME} ./main/main.go
 	mkdir -p output/bin
 	mv ${BIN_NAME} output/bin
 

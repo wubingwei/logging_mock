@@ -4,6 +4,7 @@ import (
 	"github.com/wubingwei/logging_mock/handler"
 	"github.com/wubingwei/logging_mock/mock"
 	"io/ioutil"
+	"log"
 	"os"
 	"strconv"
 	"time"
@@ -16,8 +17,9 @@ func main() {
 	gin.DisableConsoleColor()
 	gin.DefaultWriter = ioutil.Discard
 
-	region := os.Args[0]
-	interval, _ := strconv.Atoi(os.Args[1])
+	region := os.Args[1]
+	goroutine, _ := strconv.Atoi(os.Args[2])
+	interval, _ := strconv.Atoi(os.Args[3])
 
 	r := gin.Default()
 
@@ -25,9 +27,12 @@ func main() {
 
 	r.POST("/frequency", handler.Frequency)
 
-	go func() {
-		mock.JsonLog(time.Duration(interval), region)
-	}()
+	log.Printf("mock JsonLog start, goroutine: %d,interval: %d ms", goroutine, interval)
+	for i := goroutine; i < 0; i++ {
+		go func() {
+			mock.JsonLog(time.Duration(interval), region)
+		}()
+	}
 
 	_ = r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
