@@ -28,11 +28,9 @@ func main() {
 	r.POST("/frequency", handler.Frequency)
 
 	log.Printf("mock JsonLog start, goroutine: %d,interval: %d ms", goroutine, interval)
-	for i := goroutine; i < 0; i++ {
-		go func() {
-			mock.JsonLog(time.Duration(interval), region)
-		}()
+	for i := goroutine; i > 0; i-- {
+		mock.JsonLog(time.Duration(interval), region)
 	}
-
+	log.Printf("========================================")
 	_ = r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

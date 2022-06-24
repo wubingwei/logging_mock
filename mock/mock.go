@@ -7,12 +7,14 @@ import (
 )
 
 func JsonLog(interval time.Duration, region string) {
-	for range time.Tick(interval * time.Millisecond) {
-		logJson := Frequency{
-			EventTime: time.Now().Unix(),
-			Region:    region,
+	go func() {
+		for range time.Tick(interval * time.Millisecond) {
+			logJson := Frequency{
+				EventTime: time.Now().Unix(),
+				Region:    region,
+			}
+			payload, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(logJson)
+			log2file.Forward.Info(string(payload))
 		}
-		payload, _ := jsoniter.ConfigCompatibleWithStandardLibrary.Marshal(logJson)
-		log2file.Forward.Info(string(payload))
-	}
+	}()
 }
