@@ -2,11 +2,11 @@ package handler
 
 import (
 	"bufio"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/wubingwei/logging_mock/mock"
 	"net/http"
+	"time"
 )
 
 func Ping(c *gin.Context) {
@@ -21,13 +21,9 @@ func Frequency(c *gin.Context) {
 	for sc.Scan() {
 		fc := new(mock.Frequency)
 		if err := jsoniter.ConfigCompatibleWithStandardLibrary.Unmarshal(sc.Bytes(), fc); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"err": err.Error(),
-			})
-		} else {
-			fmt.Println(*fc)
+			continue
 		}
-
+		mock.ContainerObj.Count(fc.Region, time.Now().Unix()-fc.EventTime)
 	}
 
 	//mock.ContainerObj.Count(fc.Region, time.Now().Unix()-fc.EventTime)

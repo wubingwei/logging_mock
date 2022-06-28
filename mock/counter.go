@@ -48,12 +48,12 @@ func (c Container) Count(region string, delta int64) {
 			RWMutex: sync.RWMutex{},
 		}
 	}
-	counter.Lock()
-	defer counter.Unlock()
-	counter.N += 1
-	counter.Delta += delta
-	if counter.N == 100 {
+	c[region].Lock()
+	defer c[region].Unlock()
+	c[region].N += 1
+	c[region].Delta += delta
+	if c[region].N == 1000 {
 		log2file.Frequency.Infof("[region: %s]|[avg_time: %.3f]", region, float64(counter.Delta)/float64(counter.N))
-		counter.N, counter.Delta = 0, 0
+		c[region].N, c[region].Delta = 0, 0
 	}
 }
