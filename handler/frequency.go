@@ -21,7 +21,9 @@ func Frequency(c *gin.Context) {
 	for sc.Scan() {
 		fc := new(mock.Frequency)
 		if err := jsoniter.ConfigCompatibleWithStandardLibrary.Unmarshal(sc.Bytes(), fc); err != nil {
-			fmt.Println(err.Error())
+			c.JSON(http.StatusBadRequest, gin.H{
+				"err": err.Error(),
+			})
 		} else {
 			fmt.Println(*fc)
 		}
