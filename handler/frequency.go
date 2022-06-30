@@ -18,6 +18,8 @@ func Ping(c *gin.Context) {
 func Frequency(c *gin.Context) {
 	sc := bufio.NewScanner(c.Request.Body)
 
+	num := 0
+	t := time.Now()
 	for sc.Scan() {
 		fc := new(mock.Frequency)
 		if err := jsoniter.ConfigCompatibleWithStandardLibrary.Unmarshal(sc.Bytes(), fc); err != nil {
@@ -28,6 +30,8 @@ func Frequency(c *gin.Context) {
 
 	//mock.ContainerObj.Count(fc.Region, time.Now().Unix()-fc.EventTime)
 	c.JSON(http.StatusOK, gin.H{
-		"status": "ok",
+		"status":       "ok",
+		"num":          num,
+		"cost_time_ms": time.Since(t).Milliseconds(),
 	})
 }
