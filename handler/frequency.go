@@ -25,6 +25,7 @@ func Frequency(c *gin.Context) {
 		if err := jsoniter.ConfigCompatibleWithStandardLibrary.Unmarshal(sc.Bytes(), fc); err != nil {
 			continue
 		}
+		num++
 		mock.ContainerObj.Count(fc.Region, time.Now().UnixMilli()-fc.EventTime)
 	}
 
