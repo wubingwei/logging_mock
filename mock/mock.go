@@ -10,7 +10,7 @@ func JsonLog(interval time.Duration, region string) {
 	go func() {
 		for range time.Tick(interval * time.Millisecond) {
 			logJson := Frequency{
-				EventTime:   time.Now().Unix(),
+				EventTime:   time.Now().UnixMilli(),
 				Region:      region,
 				Adx:         "mintegral",
 				Os:          "ios",
